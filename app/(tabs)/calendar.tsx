@@ -1,11 +1,78 @@
-import { Calendar, toDateId, useDateRange } from "@marceloterreiro/flash-calendar";
+import {
+  Calendar,
+  toDateId,
+  useDateRange,
+} from "@marceloterreiro/flash-calendar";
 import { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 const today = toDateId(new Date());
+const tripName = "3-Day Trip";
+
+import { CalendarTheme } from "@marceloterreiro/flash-calendar";
+
+const linearAccent = "#3F852B";
+
+const linearTheme: CalendarTheme = {
+  rowMonth: {
+    content: {
+      textAlign: "left",
+      color: "rgba(0, 0, 0, 1)",
+      fontWeight: "700",
+    },
+  },
+  rowWeek: {
+    container: {
+      borderBottomWidth: 1,
+      borderBottomColor: "rgba(0, 0, 0, 0.1)",
+      borderStyle: "solid",
+    },
+  },
+  itemWeekName: { content: { color: "rgba(0, 0, 0, 0.5)" } },
+  itemDayContainer: {
+    activeDayFiller: {
+      backgroundColor: linearAccent,
+    },
+  },
+  itemDay: {
+    idle: ({ isPressed, isWeekend }) => ({
+      container: {
+        backgroundColor: isPressed ? linearAccent : "transparent",
+        borderRadius: 20,
+      },
+      // content: {
+      //   color: isWeekend && !isPressed ? "rgba(0, 0, 0, 1)" : "#000",
+      // },
+      content: {
+        color: !isPressed ? "rgba(0, 0, 0, 1)" : "#fff",
+      }
+    }),
+    today: ({ isPressed }) => ({
+      container: {
+        borderColor: "rgba(255, 255, 255, 0.5)",
+        borderRadius: isPressed ? 20 : 0,
+        backgroundColor: isPressed ? linearAccent : "transparent",
+      },
+      content: {
+        color: isPressed ? "#fff" : "#3F852B",
+      },
+    }),
+    active: ({ isEndOfRange, isStartOfRange }) => ({
+      container: {
+        backgroundColor: linearAccent,
+        borderTopLeftRadius: isStartOfRange ? 20 : 0,
+        borderBottomLeftRadius: isStartOfRange ? 20 : 0,
+        borderTopRightRadius: isEndOfRange ? 20 : 0,
+        borderBottomRightRadius: isEndOfRange ? 20 : 0,
+      },
+      content: {
+        color: "#fff",
+      },
+    }),
+  },
+};
 
 export default function CalendarScreen() {
-  const [selectedDate, setSelectedDate] = useState(today);
   const {
     calendarActiveDateRanges,
     onCalendarDayPress,
@@ -16,34 +83,31 @@ export default function CalendarScreen() {
   } = useDateRange();
 
   return (
-    <View style={{ flex: 1 }}>
-    <Text style={styles.text}>Selected date: {selectedDate}</Text>
-    <Calendar.List
-      // calendarActiveDateRanges={[
-      //   {
-      //     startId: selectedDate,
-      //     endId: selectedDate,
-      //   },
-      // ]}
-      calendarInitialMonthId={today}
-      // onCalendarDayPress={setSelectedDate}
-      calendarActiveDateRanges={calendarActiveDateRanges}
-      onCalendarDayPress={onCalendarDayPress}
-    />
-  </View>
+    <View style={styles.container}>
+      {/* <Text>{tripName}</Text> */}
+      <Text></Text>
+      <View style={{flex: 2}}>
+        <Calendar.List
+          calendarInitialMonthId={today}
+          calendarActiveDateRanges={calendarActiveDateRanges}
+          onCalendarDayPress={onCalendarDayPress}
+          theme={linearTheme}
+        />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // paddingTop: 100,
-    // paddingBottom: 160
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   text: {
-    color: '#fff',
+    color: "#000",
   },
-})
+});
