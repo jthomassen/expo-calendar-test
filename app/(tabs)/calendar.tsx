@@ -1,15 +1,55 @@
 import {
   Calendar,
+  CalendarTheme,
   toDateId,
   useDateRange,
 } from "@marceloterreiro/flash-calendar";
 import { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, Modal, TouchableOpacity, StyleSheet } from "react-native";
 
+const [modalVisible, setModalVisible] = useState();
 const today = toDateId(new Date());
 const tripName = "3-Day Trip";
 
-import { CalendarTheme } from "@marceloterreiro/flash-calendar";
+export default function CalendarScreen() {
+  const {
+    calendarActiveDateRanges,
+    onCalendarDayPress,
+    // Also available for your convenience:
+    // dateRange, // { startId?: string, endId?: string }
+    // isDateRangeValid, // boolean
+    // onClearDateRange, // () => void
+  } = useDateRange();
+
+  return (
+    <View style={styles.container}>
+      {/* <Text>{tripName}</Text> */}
+      <Text></Text>
+      <View style={{flex: 2}}>
+        <Calendar.List
+          calendarInitialMonthId={today}
+          calendarActiveDateRanges={calendarActiveDateRanges}
+          onCalendarDayPress={onCalendarDayPress}
+          theme={linearTheme}
+        />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  text: {
+    color: "#000",
+  },
+});
 
 const linearAccent = "#3F852B";
 
@@ -71,43 +111,3 @@ const linearTheme: CalendarTheme = {
     }),
   },
 };
-
-export default function CalendarScreen() {
-  const {
-    calendarActiveDateRanges,
-    onCalendarDayPress,
-    // Also available for your convenience:
-    // dateRange, // { startId?: string, endId?: string }
-    // isDateRangeValid, // boolean
-    // onClearDateRange, // () => void
-  } = useDateRange();
-
-  return (
-    <View style={styles.container}>
-      {/* <Text>{tripName}</Text> */}
-      <Text></Text>
-      <View style={{flex: 2}}>
-        <Calendar.List
-          calendarInitialMonthId={today}
-          calendarActiveDateRanges={calendarActiveDateRanges}
-          onCalendarDayPress={onCalendarDayPress}
-          theme={linearTheme}
-        />
-      </View>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  text: {
-    color: "#000",
-  },
-});
